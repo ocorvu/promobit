@@ -23,4 +23,16 @@ class Tag extends Model
 
         return $data;
     }
+
+    private function productsToSql($id)
+    {
+        $sql = DB::table('tags')
+            ->join('product_tag', 'tags.id', '=', 'product_tag.tag_id')
+            ->join('products', 'products.id', '=', 'product_tag.product_id')
+            ->where('tags.id', '=' , $id)
+            ->select('tags.id as tagID', 'tags.name as tagName', 'products.id as productID', 'products.name as productName')
+            ->toSql();
+
+        return $sql;
+    }
 }
